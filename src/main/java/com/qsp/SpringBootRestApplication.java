@@ -25,17 +25,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 					servers = { @Server(url = "http://localhost:8080",
 								      description = "local dev server")})
 public class SpringBootRestApplication {
-
 	public static void main(String[] args) {
-
-		ConfigurableApplicationContext context =
-				SpringApplication.run(SpringBootRestApplication.class, args);
-//		System.out.println("application context created");
-		
-		// Accessing properties from application.properties file.
-//		String property = context.getEnvironment().getProperty("baseurl");
-//		String dbproperty = context.getEnvironment().getProperty("spring.mail.password");
-//		System.out.println(property);
-//		System.out.println(dbproperty);
+		SpringApplication.run(SpringBootRestApplication.class, args);
 	}
 }

@@ -39,7 +39,7 @@ public class ClientController {
 	private final MailOTPService mailService;
 	private final ClientService clientService;
 	
-	@GetMapping("/getAllClientSubscriptionsTypes")
+	@GetMapping("/subscription-types")
 	@Operation(summary = "Get all available Subscriptions")
 	public ResponseEntity<ResponseStructure<String[]>> preprocessing(){
 		
@@ -49,7 +49,7 @@ public class ClientController {
 		return responseEntityMapper.getResponseEntity(res,HttpStatus.OK);
 	}
 	
-	@PostMapping("/createClient")
+	@PostMapping("/register")
 	@Operation(summary = "Client Creation API")
 	public ResponseEntity<ResponseStructure<String>> clientRegistration(
 			@RequestBody ClientCreationDto dto) {
@@ -60,7 +60,7 @@ public class ClientController {
 		return responseEntityMapper.getResponseEntity(res, HttpStatus.OK);
 	}
 	
-	@PostMapping("/verifyClientOtp")
+	@PostMapping("/verify-otp")
 	@Operation(summary = "Verify Client received OTP")
 	public ResponseEntity<ResponseStructure<String>> verifyClientOTP(
 			@RequestParam("email") String email,
@@ -82,9 +82,9 @@ public class ClientController {
 		
 	}
 	
-	@GetMapping("/getAllClientsByStatus")
+	@GetMapping
 	public ResponseEntity<ResponseStructure<List<Client>>> getAllClients
-				(@RequestParam Boolean isActive){
+				(@RequestParam  Boolean isActive){
 		List<Client> payload =  clientService.getAllClientsServiceByStatus(isActive);
 		ResponseStructure<List<Client>> res = responseStructureModelMapper
 				.mapToResponseStructure(HttpStatus.OK, "String", payload);
