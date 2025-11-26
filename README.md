@@ -244,15 +244,6 @@ Planned for upcoming releases:
 
 ---
 
-## Testing tips
-
-- For OTP/email testing, run a local SMTP testing tool such as MailHog, Mailtrap, or Papercut and point `spring.mail.*` to it.
-- Use Swagger UI for manual API testing.
-- Create a client via `/client/createClient` and verify with `/client/verifyClientOtp`.
-- Add WeatherReport entries and test the pagination and CRUD endpoints.
-
----
-
 ## Contributing
 
 Contributions are welcome. Suggested workflow:
