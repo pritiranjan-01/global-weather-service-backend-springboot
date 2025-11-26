@@ -187,14 +187,8 @@ These keys are currently conceptual — the implementation will read these to sc
 Health
 - GET /api/health — quick heartbeat
 
-Weather (persistent)
+Weather APIs
 - POST /weather — create a weather report
-  - Example:
-    {
-      "city": "Bengaluru",
-      "temp": 30,
-      "weatherType": "Sunny"
-    }
 - GET /weather — list all weather reports
 - GET /weather/{id} — get a report by id
 - PUT /weather/{id} — update an existing report
@@ -205,7 +199,7 @@ International (in-memory / external microservice-backed)
 - GET /global/{city} — get international weather for `city`
 - GET /global — get all international weather (Map<String, WeatherDTO>)
 
-Client / Subscription / OTP
+Client APIs
 - GET /client/subscription-types — returns available subscription types (GO, PRO, MAX)
 - POST /client/register — register a client and send OTP via email
 - POST /client/verify-otp?email=alice@example.com&otp=123456 — verify OTP
@@ -214,6 +208,10 @@ Client / Subscription / OTP
 - DELETE /?email=alice@example.com - Delete the Client details (Soft Delete)
 
 Responses use a uniform response wrapper: ResponseStructure<T> (contains status, message, data).
+
+---
+## Postman Collection
+[Weather Management REST API.postman_collection.json](https://github.com/user-attachments/files/23771100/Weather.Management.REST.API.postman_collection.json)
 
 ---
 
@@ -269,7 +267,7 @@ If you plan to implement the scheduled email & PDF feature, please open an issue
 
 ## License & contact
 
-Repository owner: pritiranjan-01
+Repository owner: [Pritiranjan Mohanty](https://github.com/pritiranjan-01)
 
 Acknowledgements
 - Built using Spring Boot and Spring ecosystem libraries (see `pom.xml` for details).
