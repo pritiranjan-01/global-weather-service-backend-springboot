@@ -268,6 +268,7 @@ If you plan to implement the scheduled email & PDF feature, please open an issue
 ## License & contact
 
 Repository owner: [Pritiranjan Mohanty](https://github.com/pritiranjan-01)
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/pritiranjan-01/Client-Weather-Management-REST-API/blob/main/LICENSE) file for details.
 
 Acknowledgements
 - Built using Spring Boot and Spring ecosystem libraries (see `pom.xml` for details).
