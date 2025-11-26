@@ -110,7 +110,7 @@ Key endpoints (summary)
       {
         "name": "Alice",
         "email": "alice@example.com",
-        "subscriptionType": "FREE"
+        "subscriptionType": "0"
       }
   - POST /client/verifyClientOtp?email=alice@example.com&otp=123456 — verify OTP
 
@@ -125,36 +125,3 @@ Actuator
 - All actuator endpoints are exposed by default per `application.properties`.
   - Example: http://localhost:8080/actuator/health
 
-Sample curl commands (Windows cmd)
-
-- Health:
-
-```cmd
-curl -X GET "http://localhost:8080/api/health"
-```
-
-- Create weather (POST):
-
-```cmd
-curl -X POST "http://localhost:8080/weather" -H "Content-Type: application/json" -d "{\"city\":\"Bengaluru\",\"temp\":30,\"weatherType\":\"Sunny\"}"
-```
-
-- Get international weather for a city:
-
-```cmd
-curl -X GET "http://localhost:8080/global/london" -H "Accept: application/json"
-```
-
-Notes & recommendations
-
-- Move secrets out of `application.properties` to environment variables or a secrets manager before pushing to remote repositories.
-- Limit actuator exposures in production.
-- Add README examples for `WeatherCreationDto` and `ClientCreationDto` based on DTO definitions if you want stricter example payloads.
-- Consider adding more unit/integration tests for controllers and services.
-
-Contact
-
-If you want, I can also:
-- Add a second README for `International_Weather_App`.
-- Replace the plaintext secrets in `application.properties` with placeholders and add instructions to use environment variables.
-- Generate Windows cmd-style curl commands for additional endpoints.
