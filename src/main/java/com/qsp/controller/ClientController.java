@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +28,14 @@ import com.qsp.util.SubscriptionType;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/client")
 @Tag(name = "/client", description = "Client APIs")
+@Validated
 public class ClientController {
 	private final ResponseStructureModelMapper responseStructureModelMapper;
 	private final ResponseEntityMapper responseEntityMapper;
@@ -52,7 +55,7 @@ public class ClientController {
 	@PostMapping("/register")
 	@Operation(summary = "Client Creation API")
 	public ResponseEntity<ResponseStructure<String>> clientRegistration(
-			@RequestBody ClientCreationDto dto) {
+			@Valid @RequestBody ClientCreationDto dto) {
 		
 		String payload =  mailService.sendOtp(dto.getEmail(), dto);
 		ResponseStructure<String> res = responseStructureModelMapper
@@ -94,7 +97,7 @@ public class ClientController {
 	@PutMapping("/{email}")
 	public ResponseEntity<ResponseStructure<Map<String, ClientCreationDto>>> updateClient(
 			@PathVariable String email,
-			@RequestBody ClientUpdateRequestDto dto){
+			@Valid @RequestBody ClientUpdateRequestDto dto){
 		
 		Map<String, ClientCreationDto> payload =  clientService.updateClientService(email, dto);
 		ResponseStructure<Map<String, ClientCreationDto>> res = responseStructureModelMapper

@@ -42,7 +42,7 @@ public class Client {
 	private String email;
 	
 	@NonNull
-	private Long phoneNumber;
+	private String phoneNumber;
 	
 	@NonNull
 	@Enumerated(EnumType.STRING)

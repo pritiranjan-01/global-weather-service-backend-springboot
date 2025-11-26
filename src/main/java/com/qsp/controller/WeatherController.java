@@ -46,7 +46,7 @@ public class WeatherController {
 	@PostMapping
 	@Operation(description = "Post operation to save weather info as per the city", summary = "Post operation to save weather info as per the city")
 	public ResponseEntity<ResponseStructure<String>> saveWeatherReport(
-			@RequestBody WeatherCreationDto dto) {
+			@Valid @RequestBody WeatherCreationDto dto) {
 		String serviceResponse = weatherService.saveCityWeatherInfoService(dto);
 		ResponseStructure<String> structure = responseStructure
 				.mapToResponseStructure(HttpStatus.CREATED, "String",serviceResponse);
