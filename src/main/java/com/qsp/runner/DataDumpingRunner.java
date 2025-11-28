@@ -32,7 +32,7 @@ public class DataDumpingRunner implements CommandLineRunner{
 		// Weather Data Dumping
 		long count = weatherRepositoy.count();
 		count = 150-count;
-		if(count<=0) {
+		if(count>=0) {
 		String dummyCity = "DummyCity ";
 		for(int i=1;i<=count;i++) {
 			String tempcity = dummyCity+i;
