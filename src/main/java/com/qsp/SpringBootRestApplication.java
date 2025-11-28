@@ -19,11 +19,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @EnableAspectJAutoProxy // for aop
 @EnableJpaAuditing // for time stamping
 @EnableAsync //for multhithreading
-@OpenAPIDefinition(info = @Info(title = "REST_API",
-								description = "Demo learning project",
-								version = "1.0"),
-					servers = { @Server(url = "http://localhost:8080",
-								      description = "local dev server")})
+@OpenAPIDefinition
 public class SpringBootRestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootRestApplication.class, args);
