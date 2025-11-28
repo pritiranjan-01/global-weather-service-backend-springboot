@@ -34,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/client")
-@Tag(name = "/client", description = "Client APIs")
+@Tag(name = "/client", description = "Create, Read, Update, Delete Client API")
 @Validated
 public class ClientController {
 	private final ResponseStructureModelMapper responseStructureModelMapper;
@@ -64,7 +64,7 @@ public class ClientController {
 	}
 	
 	@PostMapping("/verify-otp")
-	@Operation(summary = "Verify Client received OTP")
+	@Operation(summary = "Verify Client Email received OTP")
 	public ResponseEntity<ResponseStructure<String>> verifyClientOTP(
 			@RequestParam("email") String email,
 			@RequestParam("otp") String Otp) {
@@ -75,6 +75,7 @@ public class ClientController {
 		return responseEntityMapper.getResponseEntity(res, HttpStatus.CREATED);
 	}
 	
+	@Operation(summary = "Delete a Client")
 	@DeleteMapping("/{email}")
 	public ResponseEntity<ResponseStructure<String>> deleteClient(@PathVariable String email) {
 		
@@ -85,15 +86,17 @@ public class ClientController {
 		
 	}
 	
+	@Operation(summary = "Fetch all the Clients")
 	@GetMapping
 	public ResponseEntity<ResponseStructure<List<Client>>> getAllClients
-				(@RequestParam  Boolean isActive){
+				(@RequestParam(defaultValue = "true")  Boolean isActive){
 		List<Client> payload =  clientService.getAllClientsServiceByStatus(isActive);
 		ResponseStructure<List<Client>> res = responseStructureModelMapper
 				.mapToResponseStructure(HttpStatus.OK, "String", payload);
 		return responseEntityMapper.getResponseEntity(res, HttpStatus.OK);
 	}
 	
+	@Operation(summary = "Update a Client by Email")
 	@PutMapping("/{email}")
 	public ResponseEntity<ResponseStructure<Map<String, ClientCreationDto>>> updateClient(
 			@PathVariable String email,

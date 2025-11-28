@@ -34,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/weather")
-@Tag(name = "/weather", description = "Save, Update, Remove, Delete Weather")
+@Tag(name = "/weather", description = "Create, Read, Update, Delete Weather API")
 public class WeatherController {
 
 	private final WeatherService weatherService;
