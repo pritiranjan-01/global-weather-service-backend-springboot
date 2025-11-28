@@ -27,6 +27,7 @@ public class WeatherReportAspect {
 		log.info("Class Name: "+joinpoint.getTarget().getClass().getName()+
 				", Method Returned "+joinpoint.getSignature().getName());
 	}
+	
 	@AfterThrowing(pointcut = "execution(* com.qsp.serviceimplement.WeatherServiceImplementation.*(..))",
 			       throwing = "ex")
 	public void afterException(JoinPoint joinpoint, Throwable ex) {
