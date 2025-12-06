@@ -1,20 +1,16 @@
 package com.qsp.serviceimplement;
 
 import java.time.LocalDateTime;
-
-
 import java.util.Map;
 import java.util.Random;
-
-import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import com.qsp.aspect.WeatherReportAspect;
+
 import com.qsp.event.ClientSaveEvent;
 import com.qsp.exception.custom.EmailAlreadyExistException;
 import com.qsp.exception.custom.OtpExpiredException;
@@ -22,11 +18,11 @@ import com.qsp.exception.custom.OtpGenerationException;
 import com.qsp.exception.custom.OtpMismatchException;
 import com.qsp.exception.custom.OtpNotGeneratedException;
 import com.qsp.exception.custom.TooManyOtpAttemptsException;
-import com.qsp.repository.AuditRepositiry;
-import com.qsp.repository.ClientRepository;
 import com.qsp.requestdto.ClientCreationDto;
 import com.qsp.service.ClientService;
 import com.qsp.service.MailOTPService;
+
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class MailOtpServiceImplementation implements MailOTPService {
@@ -52,6 +48,7 @@ public class MailOtpServiceImplementation implements MailOTPService {
 		
 		if(clientService.checkClientEmailExistAndIsActiveStatusTrue(emailId))
 			throw new EmailAlreadyExistException("Email already exist");
+
 		
 		try {
 			Integer otp = random.nextInt(100000,1000000);
@@ -60,13 +57,26 @@ public class MailOtpServiceImplementation implements MailOTPService {
 			Object value[] = new Object[] { dto, otp + "", LocalDateTime.now().plusMinutes(3), 0 };
 			otpHolder.put(emailId, value);
 			
-			SimpleMailMessage message =  new SimpleMailMessage();
-			message.setFrom("pritiranjan.mohanty2003@gmail.com");
-			message.setTo(emailId);
-			message.setText("Your One Time Password (OTP) is : "+otp);
-			message.setSubject("One Time Password From Weather App");
-			mailSender.send(message);
-			
+			MimeMessage mimeMessage = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+
+			String htmlContent = """
+			        <p>Dear User,</p>
+			        <p>
+			            Your One-Time Password (OTP) for creating your 
+			            <b>Global Weather Service</b> account is:  <b>%s</b> 
+			        </p>
+			        <p>Please enter this OTP within <b>2 minutes</b> to complete your verification.</p>
+			        <p>If you did not request this OTP, please ignore this email or contact our support team.</p>
+			        <p> Regards,<br> <b>Global Weather Service Team</b> </p>
+			        """.formatted(otp);
+
+			helper.setTo(emailId);
+			helper.setSubject("Your OTP for Global Weather Service");
+			helper.setFrom("pritiranjan.mohanty2003@gmail.com");
+			helper.setText(htmlContent, true);
+
+			mailSender.send(mimeMessage);
 			System.out.println(otpHolder);
 			
 			return  "Otp send successfully to recipient email id";
@@ -101,6 +111,6 @@ public class MailOtpServiceImplementation implements MailOTPService {
 		}
 
 		publisher.publishEvent(new ClientSaveEvent(emailId));
-		return "OTP validated successfully";
+		return "OTP validated successfully. Your account has been created. Please check your email.";
 	}
 }

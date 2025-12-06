@@ -18,6 +18,7 @@ import com.qsp.exception.custom.InvalidSubscriptionException;
 import com.qsp.exception.custom.OtpExpiredException;
 import com.qsp.exception.custom.OtpMismatchException;
 import com.qsp.exception.custom.OtpNotGeneratedException;
+import com.qsp.exception.custom.ServiceUnavailableException;
 import com.qsp.exception.custom.TooManyOtpAttemptsException;
 import com.qsp.modelmapper.ResponseEntityMapper;
 import com.qsp.modelmapper.ResponseStructureModelMapper;
@@ -72,47 +73,63 @@ public class GlobalExceptionHandler {
 	}
 	
 	
-	
 	@ExceptionHandler(OtpExpiredException.class)
-	public ResponseEntity<?> handleOtpExpired(OtpExpiredException e){
-		return ResponseEntity
-				.status(HttpStatus.GONE)
-				.body(e.getMessage());
+	public ResponseEntity<ResponseStructure<String>>  handleOtpExpired(OtpExpiredException e){
+		ResponseStructure<String> structure = responseStructureMapper
+			    .mapToResponseStructure(HttpStatus.GONE, "String", e.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.GONE);
+
 	}
 	@ExceptionHandler(OtpMismatchException.class)
-	public ResponseEntity<?> handleOtpMismatch(OtpMismatchException e){
-		return ResponseEntity
-				.status(HttpStatus.UNAUTHORIZED)
-				.body(e.getMessage());
+	public ResponseEntity<ResponseStructure<String>>  handleOtpMismatch(OtpMismatchException e){
+		ResponseStructure<String> structure = responseStructureMapper
+			    .mapToResponseStructure(HttpStatus.UNAUTHORIZED, "String", e.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.UNAUTHORIZED);
+
 	}
 	@ExceptionHandler(OtpNotGeneratedException.class)
-	public ResponseEntity<?> handleOtpNotGenerated(OtpNotGeneratedException e){
-		return ResponseEntity
-				.status(HttpStatus.BAD_REQUEST)
-				.body(e.getMessage());
+	public ResponseEntity<ResponseStructure<String>>  handleOtpNotGenerated(OtpNotGeneratedException e){
+		ResponseStructure<String> structure = responseStructureMapper
+			    .mapToResponseStructure(HttpStatus.BAD_REQUEST, "String", e.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.BAD_REQUEST);
 	}
 	@ExceptionHandler(EmailAlreadyExistException.class)
 	public ResponseEntity<?> handleEmailAlreadyException(EmailAlreadyExistException e){
-		return ResponseEntity
-				.status(HttpStatus.ALREADY_REPORTED)
-				.body(e.getMessage());
+		ResponseStructure<String> structure = responseStructureMapper
+			    .mapToResponseStructure(HttpStatus.ALREADY_REPORTED, "String", e.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.ALREADY_REPORTED);
+
 	}
 	@ExceptionHandler(InvalidSubscriptionException.class)
-	public ResponseEntity<?> handleInvalidSubscriptionException(InvalidSubscriptionException e){
-		return ResponseEntity
-				.status(HttpStatus.BAD_REQUEST)
-				.body(e.getMessage());
+	public ResponseEntity<ResponseStructure<String>>  handleInvalidSubscriptionException(InvalidSubscriptionException e){
+		ResponseStructure<String> structure = responseStructureMapper
+			    .mapToResponseStructure(HttpStatus.BAD_REQUEST, "String", e.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.BAD_REQUEST);
 	}
 	@ExceptionHandler(TooManyOtpAttemptsException.class)
 	public ResponseEntity<?> handleTooManyOtpAttemptsException(TooManyOtpAttemptsException e){
-		return ResponseEntity
-				.status(HttpStatus.BAD_REQUEST)
-				.body(e.getMessage());
+		ResponseStructure<String> structure = responseStructureMapper
+			    .mapToResponseStructure(HttpStatus.BAD_REQUEST, "String", e.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.BAD_REQUEST);
 	}
 	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<?> handleTooManyOtpAttemptsException(RuntimeException e){
-		return ResponseEntity
-				.status(HttpStatus.EXPECTATION_FAILED)
-				.body(e.getMessage());
+	public ResponseEntity<ResponseStructure<String>>  handleTooManyOtpAttemptsException(RuntimeException e){
+		ResponseStructure<String> structure = responseStructureMapper
+			    .mapToResponseStructure(HttpStatus.EXPECTATION_FAILED, "String", e.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.EXPECTATION_FAILED);
+	}
+	@ExceptionHandler(ServiceUnavailableException.class)
+	public ResponseEntity<ResponseStructure<String>>  handleTooManyOtpAttemptsException(ServiceUnavailableException e){
+		ResponseStructure<String> structure = responseStructureMapper
+			    .mapToResponseStructure(HttpStatus.SERVICE_UNAVAILABLE, "String", e.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.SERVICE_UNAVAILABLE);
 	}
 }

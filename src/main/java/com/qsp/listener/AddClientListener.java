@@ -54,18 +54,30 @@ public class AddClientListener {
 	@EventListener
 	@Async
 	public void notifyClient(ClientSaveEvent event) {
-		SimpleMailMessage message =  new SimpleMailMessage();
-		
 		Object object[] = otpHolder.get(event.getEmailid());
-		String name = ((ClientCreationDto)object[0]).getName();
+		
+		ClientCreationDto dto = ((ClientCreationDto)object[0]);
+		String name = dto.getName();
+		SubscriptionType subscriptionType = SubscriptionType.getUserSubscriptionType(dto.getSubscriptionType());
+		
+		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("pritiranjan.mohanty2003@gmail.com");
 		message.setTo(event.getEmailid());
-		message.setSubject("Notification from Weather Service India");
-		
+		message.setSubject("Notification from Global Weather Service India");
+
 		StringBuilder builder = new StringBuilder();
-		builder.append("Dear "+name + "\n\nThanks for using our Service.\n\nRegards,\nWeather Service India");
+		builder.append("Dear ").append(name).append(",\n\n");
+		builder.append("Thank you for using Global Weather Service India.\n");
+		builder.append("You are currently subscribed to the following plan:\n");
+		builder.append("Subscription Type: ").append(subscriptionType).append("\n\n");
+		builder.append("We appreciate your trust. Stay tuned for accurate weather updates.\n\n");
+		builder.append("Regards,\n");
+		builder.append("Global Weather Service India Team");
+
+
 		message.setText(builder.toString());
 		mailSender.send(message);
+
 	}
 	
 	@Order(3)

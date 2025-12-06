@@ -9,5 +9,5 @@ import com.qsp.entity.WeatherReport;
 
 @Repository
 public interface WeatherRepositoy extends JpaRepository<WeatherReport, Integer>{
-	
+
 }

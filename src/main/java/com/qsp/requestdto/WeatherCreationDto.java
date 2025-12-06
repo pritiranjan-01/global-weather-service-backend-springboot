@@ -21,6 +21,6 @@ public class WeatherCreationDto {
 	@NotNull(message = "Temperature is required")
 	private Integer temp;
 	@NotBlank(message = "WeatherType cant be blank")
-	private String weathertype;
+	private String weatherType;
 	
 }

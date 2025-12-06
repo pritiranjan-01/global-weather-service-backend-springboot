@@ -21,6 +21,6 @@ public class ClientUpdateRequestDto {
 	@NotNull(message = "Mobile Number is required")
 	private String mobileNumber;
 	
-	@NotNull(message = "Subscription type is required")
-	private Integer subscrptionType;
+//	@NotNull(message = "Subscription type is required")
+//	private Integer subscrptionType;
 }

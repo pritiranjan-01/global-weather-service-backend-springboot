@@ -106,4 +106,13 @@ public class WeatherController {
 				mapToResponseStructure(HttpStatus.OK, "Object", payload);
 		return responseEntityMapper.getResponseEntity(structure, HttpStatus.OK);
 	}
+	
+	@GetMapping("/count")
+	public  ResponseEntity<ResponseStructure<Map<String, Long>>> getCountOfClients(){
+		Long count = weatherService.countTotalWeather();
+		ResponseStructure<Map<String, Long>> payload =
+				responseStructure.mapToResponseStructure(HttpStatus.OK, "Object", Map.of("count",count));
+		return responseEntityMapper.getResponseEntity(payload, HttpStatus.OK);
+	}
+	
 }

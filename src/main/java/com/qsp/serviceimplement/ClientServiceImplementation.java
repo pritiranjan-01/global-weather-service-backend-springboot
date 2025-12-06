@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.qsp.entity.Client;
 import com.qsp.repository.ClientRepository;
 import com.qsp.requestdto.ClientCreationDto;
@@ -57,9 +58,13 @@ public class ClientServiceImplementation implements ClientService{
 		client.setIsActive(true);
 		client.setName(dto.getName());
 		client.setPhoneNumber(dto.getMobileNumber());
-		client.setSubscriptionType(SubscriptionType.getUserSubscriptionType(dto.getSubscrptionType()));
-		
-		ClientCreationDto updatedData = new ClientCreationDto(dto.getName(),client.getEmail(),dto.getSubscrptionType(),dto.getMobileNumber());
+	
+		ClientCreationDto updatedData = ClientCreationDto.builder()
+												.email(email)
+												.name(dto.getName())
+												.phoneNumber(dto.getMobileNumber())
+												.subscriptionType(client.getSubscriptionType().ordinal())
+												.build();
 		
 		clientRepo.save(client);
 		return Map.of("UpdatedData",updatedData);
@@ -77,5 +82,29 @@ public class ClientServiceImplementation implements ClientService{
 	@Override
 	public boolean checkClientEmailExistAndIsActiveStatusTrue(String email) {
 		return clientRepo.existsByEmailAndIsActiveTrue(email);
+	}
+
+	@Override
+	public String updateClientSubscription(String email, Integer subscriptionCode) {
+		Optional<Client> optional = clientRepo.findByEmail(email);
+		if(optional.isEmpty()) 	throw new NoSuchElementException("No Client was found with email "+email);
+		if(!optional.get().getIsActive()) throw new NoSuchElementException("Client is inactive");
+        Client client = optional.get();
+        client.setSubscriptionType(SubscriptionType.getUserSubscriptionType(subscriptionCode));
+        clientRepo.save(client);
+        return "Client Subscription updated";
+	}
+
+	@Override
+	public Client getClientByEmail(String email) {
+		Optional<Client> optional = clientRepo.findByEmail(email);
+		if(optional.isEmpty()) 	throw new NoSuchElementException("No Client was found with email ");
+		if(!optional.get().getIsActive()) throw new NoSuchElementException("Client is inactive");
+		return optional.get();
+	}
+
+	@Override
+	public Long countOfClientByStatus(Boolean status) {
+		return clientRepo.countByIsActive(status);
 	}
 }

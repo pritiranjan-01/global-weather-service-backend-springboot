@@ -8,13 +8,13 @@ public enum SubscriptionType {
 	public static SubscriptionType getUserSubscriptionType(Integer ordinal) {
 		switch (ordinal) {
 		case 0:
-			return PRO;
-		case 1:
-			return MAX;
-		case 2:
 			return GO;
+		case 1:
+			return PRO;
+		case 2:
+			return MAX;
 		default:
-			throw new InvalidSubscriptionException("Invalid Subscription code");
+			throw new InvalidSubscriptionException("Invalid Subscription code. Kindly choose between 0(PRO),1(MAX),2(GO).");
 		}
 	}
 

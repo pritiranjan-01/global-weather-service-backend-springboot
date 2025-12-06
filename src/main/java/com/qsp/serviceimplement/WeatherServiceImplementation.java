@@ -1,9 +1,12 @@
 package com.qsp.serviceimplement;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -32,6 +35,8 @@ public class WeatherServiceImplementation implements WeatherService{
 	private final RequestWeatherMapper weatherMapper;
 	
 	private final CacheUtil cacheUtil;
+	
+	private final Random random;
 	
 	@Override
 	@Transactional
@@ -93,5 +98,23 @@ public class WeatherServiceImplementation implements WeatherService{
 	public List<WeatherReport> getWeatherPageService(Integer pageNumber, Integer pageSize) {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		return weatherRepo.findAll(pageable).getContent();
+	}
+
+	@Override
+	public List<WeatherReport> getRandomWeather(int length) {
+		 List<WeatherReport> allReports = weatherRepo.findAll();
+
+		    Collections.shuffle(allReports);
+
+		    if (length > allReports.size()) {
+		        length = allReports.size();
+		    }
+
+		    return allReports.subList(0, length);
+	}
+
+	@Override
+	public Long countTotalWeather() {
+		return weatherRepo.count();
 	}
 }

@@ -21,4 +21,9 @@ public interface WeatherService {
 	
 	List<WeatherReport> getWeatherPageService(Integer pageNumber, Integer pageSize);
 	
+	// Email sending Weather Report
+	List<WeatherReport> getRandomWeather(int length);
+	
+	Long countTotalWeather();
+	
 }

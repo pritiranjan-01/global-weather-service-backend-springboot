@@ -1,5 +1,7 @@
 package com.qsp.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.qsp.requestdto.WeatherDTO;
 import com.qsp.responsedto.ResponseStructure;
 import com.qsp.service.InternationalWeatherService;
 
@@ -24,14 +27,14 @@ public class InternationalWeatherController {
 
 	@Operation(summary = "Get global weather report by City name")
 	@GetMapping("/{city}")
-	public <T> ResponseEntity<ResponseStructure<T>> getInternatinalWeatherByCityName(
+	public <T> ResponseEntity<ResponseStructure<WeatherDTO>> getInternatinalWeatherByCityName(
 			@PathVariable("city") String city) {
 		return weatherService.getInternationalWeatherByCityName(city);
 	}
 
 	@Operation(summary = "Get all the global weather report")
 	@GetMapping
-	public <T> ResponseEntity<ResponseStructure<T>> getAllInternatinalWeather() {
+	public ResponseEntity<ResponseStructure<Map<String, WeatherDTO>>> getAllInternatinalWeather() {
 		return weatherService.getAllInternationalCityWeather();
 	}
 }

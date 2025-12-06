@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.qsp.entity.Client;
 import com.qsp.modelmapper.ResponseEntityMapper;
 import com.qsp.modelmapper.ResponseStructureModelMapper;
@@ -108,5 +110,36 @@ public class ClientController {
 		return responseEntityMapper.getResponseEntity(res, HttpStatus.OK);
 	}
 	
+	@PatchMapping("/{email}/subscription")
+	public ResponseEntity<ResponseStructure<String>> updateClientSubscription(
+			@PathVariable String email, @RequestParam Integer id){
+		String response = clientService.updateClientSubscription(email, id);
+		ResponseStructure<String> payload = 
+				responseStructureModelMapper.mapToResponseStructure(HttpStatus.OK, "String", response);
+		return responseEntityMapper.getResponseEntity(payload, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{email}")
+	public ResponseEntity<ResponseStructure<ClientCreationDto>> getClientByEmail(
+		@PathVariable String email){
+		Client client = clientService.getClientByEmail(email);
+		ClientCreationDto dto = ClientCreationDto.builder()
+				                      .name(client.getName())
+				                      .phoneNumber(client.getPhoneNumber())
+				                      .email(client.getEmail())
+				                      .subscriptionType(client.getSubscriptionType().ordinal())
+				                      .build();
+		 ResponseStructure<ClientCreationDto> payload = 
+				 responseStructureModelMapper.mapToResponseStructure(HttpStatus.OK, "Object", dto);
+		 return responseEntityMapper.getResponseEntity(payload, HttpStatus.OK);
+	}
+	
+	@GetMapping("/count/{isActive}")
+	public  ResponseEntity<ResponseStructure<Map<String, Long>>> getCountOfClients(@PathVariable Boolean isActive){
+		Long count = clientService.countOfClientByStatus(isActive);
+		ResponseStructure<Map<String, Long>> payload =
+				responseStructureModelMapper.mapToResponseStructure(HttpStatus.OK, "Object", Map.of("count",count));
+		return responseEntityMapper.getResponseEntity(payload, HttpStatus.OK);
+	}
 	
 }

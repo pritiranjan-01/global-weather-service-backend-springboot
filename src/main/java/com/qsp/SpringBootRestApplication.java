@@ -8,6 +8,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+import com.qsp.serviceimplement.EmailAndPdfServiceImpl;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 
@@ -20,8 +23,9 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @EnableJpaAuditing // for time stamping
 @EnableAsync //for multhithreading
 @OpenAPIDefinition
+@EnableScheduling
 public class SpringBootRestApplication {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SpringBootRestApplication.class, args);
 	}
 }

@@ -19,4 +19,9 @@ public interface ClientService {
 	
 	boolean checkClientEmailExistAndIsActiveStatusTrue(String email);
 	
+	String updateClientSubscription(String email,Integer subscriptionCode);
+	
+	Client getClientByEmail(String email);
+	
+	Long countOfClientByStatus(Boolean status);
 }

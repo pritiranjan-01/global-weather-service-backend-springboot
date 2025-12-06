@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.qsp.entity.Client;
 import java.util.List;
+import com.qsp.util.SubscriptionType;
+
 
 
 @Repository
@@ -27,5 +29,9 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
 	boolean existsByEmailAndIsActiveTrue(String email);
 
 	List<Client> findByIsActive(Boolean status);
+	
+	List<Client> findBySubscriptionTypeAndIsActiveTrue(SubscriptionType subscriptionType);
+	
+	Long countByIsActive(Boolean status);
 	
 }
