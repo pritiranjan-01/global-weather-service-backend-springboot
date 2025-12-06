@@ -27,7 +27,7 @@ public class InternationalWeatherServiceImplementation implements InternationalW
 
     private final JsonConverter jsonConverter;
 
-	@Value("${baseurl}")
+	@Value("${global_weather_baseurl}")
 	private String base_url;
 	
 	@Autowired
