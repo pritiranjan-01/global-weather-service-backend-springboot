@@ -23,4 +23,9 @@ public class GlobalCorsConfig {
 
         return new CorsFilter(source);
     }
+    
+    @Bean
+    public org.springframework.web.filter.ForwardedHeaderFilter forwardedHeaderFilter() {
+        return new org.springframework.web.filter.ForwardedHeaderFilter();
+    }
 }

@@ -22,8 +22,20 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @EnableAspectJAutoProxy // for aop
 @EnableJpaAuditing // for time stamping
 @EnableAsync //for multhithreading
-@OpenAPIDefinition
 @EnableScheduling
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Weather Service API",
+                version = "v1",
+                description = "API for retrieving weather data"
+        ),
+        servers = {
+                @Server(
+                        url = "https://weather-service-prod.up.railway.app",
+                        description = "Production Server"
+                )
+        }
+)
 public class SpringBootRestApplication {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SpringBootRestApplication.class, args);
