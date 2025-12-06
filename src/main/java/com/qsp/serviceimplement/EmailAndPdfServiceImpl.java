@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -54,9 +55,6 @@ public class EmailAndPdfServiceImpl implements EmailAndPdfService {
     private final TemplateEngine templateEngine;
     private final EmailWeatherMapper emailWeatherMapper; // map from entity to EmailWeatherDTO and adding advice 
     private final JsonConverter jsonConverter;
-    @Value("${app.base-url}")
-    private String baseUrl;
-
 	
     @Async
 	@Override
@@ -91,6 +89,7 @@ public class EmailAndPdfServiceImpl implements EmailAndPdfService {
         Context context = new Context();
         context.setVariable("cityList", listWeather);
         // Important: Pass the download link (assume Report ID is 101)
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         context.setVariable("downloadLink", baseUrl+"/weather-report/download?id="+savedEmailLog.getId());
 
         // 2. GENERATE HTML
