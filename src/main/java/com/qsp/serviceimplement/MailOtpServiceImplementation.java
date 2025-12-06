@@ -82,7 +82,7 @@ public class MailOtpServiceImplementation implements MailOTPService {
 			return  "Otp send successfully to recipient email id";
 			
 		} catch (Exception e) {
-			throw new OtpGenerationException("Invalid Email Id");
+			throw new OtpGenerationException("Invalid Email Id"+ e.getMessage());
 		}
 	}
 
