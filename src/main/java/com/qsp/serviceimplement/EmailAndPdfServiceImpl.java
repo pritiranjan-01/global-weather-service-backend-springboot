@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -53,6 +54,9 @@ public class EmailAndPdfServiceImpl implements EmailAndPdfService {
     private final TemplateEngine templateEngine;
     private final EmailWeatherMapper emailWeatherMapper; // map from entity to EmailWeatherDTO and adding advice 
     private final JsonConverter jsonConverter;
+    @Value("${app.base-url}")
+    private String baseUrl;
+
 
 	
     @Async
