@@ -57,7 +57,6 @@ public class EmailAndPdfServiceImpl implements EmailAndPdfService {
     @Value("${app.base-url}")
     private String baseUrl;
 
-
 	
     @Async
 	@Override
@@ -92,7 +91,7 @@ public class EmailAndPdfServiceImpl implements EmailAndPdfService {
         Context context = new Context();
         context.setVariable("cityList", listWeather);
         // Important: Pass the download link (assume Report ID is 101)
-        context.setVariable("downloadLink", "http://localhost:8080/weather-report/download?id="+savedEmailLog.getId());
+        context.setVariable("downloadLink", baseUrl+"/weather-report/download?id="+savedEmailLog.getId());
 
         // 2. GENERATE HTML
         String htmlContent = templateEngine.process("weather-report", context);
