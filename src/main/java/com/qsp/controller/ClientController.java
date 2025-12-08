@@ -142,4 +142,13 @@ public class ClientController {
 		return responseEntityMapper.getResponseEntity(payload, HttpStatus.OK);
 	}
 	
+	@PatchMapping("/{email}/status")
+	public ResponseEntity<ResponseStructure<Map<String, String>>> updateClientActiveStatus(
+			@PathVariable String email, @RequestParam Boolean status){
+		String message = clientService.updateClientActiveStatusService(email, status);
+		ResponseStructure<Map<String, String>> structure = responseStructureModelMapper
+							.mapToResponseStructure(HttpStatus.OK, "Object", Map.of("message", message));
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.OK);
+	}
+	
 }

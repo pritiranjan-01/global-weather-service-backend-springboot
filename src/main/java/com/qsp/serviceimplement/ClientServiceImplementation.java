@@ -84,6 +84,7 @@ public class ClientServiceImplementation implements ClientService{
 		return clientRepo.existsByEmailAndIsActiveTrue(email);
 	}
 
+	@Transactional
 	@Override
 	public String updateClientSubscription(String email, Integer subscriptionCode) {
 		Optional<Client> optional = clientRepo.findByEmail(email);
@@ -106,5 +107,12 @@ public class ClientServiceImplementation implements ClientService{
 	@Override
 	public Long countOfClientByStatus(Boolean status) {
 		return clientRepo.countByIsActive(status);
+	}
+
+	@Transactional
+	@Override
+	public String updateClientActiveStatusService(String email, Boolean status) {
+		clientRepo.updateClientActiveStatusByEmail(email, status);
+		return "Client active status updated";
 	}
 }

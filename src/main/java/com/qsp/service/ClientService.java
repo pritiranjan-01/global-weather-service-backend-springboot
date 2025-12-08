@@ -24,4 +24,6 @@ public interface ClientService {
 	Client getClientByEmail(String email);
 	
 	Long countOfClientByStatus(Boolean status);
+	
+	String updateClientActiveStatusService(String email, Boolean status);
 }
