@@ -6,11 +6,13 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.qsp.entity.Client;
+import com.qsp.event.ClientSubscriptionUpdateEvent;
 import com.qsp.repository.ClientRepository;
 import com.qsp.requestdto.ClientCreationDto;
 import com.qsp.requestdto.ClientUpdateRequestDto;
@@ -22,6 +24,8 @@ public class ClientServiceImplementation implements ClientService{
 
 	@Autowired
 	private ClientRepository clientRepo;
+	@Autowired
+	private ApplicationEventPublisher publisher;
 	
 	@Override
 	public void saveClientService(Client client) {
@@ -93,6 +97,9 @@ public class ClientServiceImplementation implements ClientService{
         Client client = optional.get();
         client.setSubscriptionType(SubscriptionType.getUserSubscriptionType(subscriptionCode));
         clientRepo.save(client);
+        
+        publisher.publishEvent(new ClientSubscriptionUpdateEvent(client.getName(), email, subscriptionCode)); // call to listener 
+        
         return "Client Subscription updated";
 	}
 

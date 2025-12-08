@@ -21,4 +21,13 @@ public enum SubscriptionType {
 	public static String[] getAllTypes() {
 		return new String[] { GO.name(), PRO.name(), MAX.name() };
 	}
+	
+	public static String getSubscriptionDetails(SubscriptionType type) {
+		return switch (type) {
+	        case GO  -> "You will receive daily <strong>local weather updates</strong> every morning at <strong>6 AM</strong>.";
+	        case PRO -> "You will receive <strong>local and international weather updates</strong> every morning at <strong>6 AM</strong>.";
+	        case MAX -> "You will receive <strong>local and international weather updates twice a day</strong>, at <strong>6 AM and 6 PM</strong>.";
+	        default  -> "Your subscription details are currently unavailable.";
+	    };
+	}
 }

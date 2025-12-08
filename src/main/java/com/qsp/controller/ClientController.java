@@ -112,8 +112,8 @@ public class ClientController {
 	
 	@PatchMapping("/{email}/subscription")
 	public ResponseEntity<ResponseStructure<String>> updateClientSubscription(
-			@PathVariable String email, @RequestParam Integer id){
-		String response = clientService.updateClientSubscription(email, id);
+			@PathVariable String email, @RequestParam Integer subscriptionId){
+		String response = clientService.updateClientSubscription(email, subscriptionId);
 		ResponseStructure<String> payload = 
 				responseStructureModelMapper.mapToResponseStructure(HttpStatus.OK, "String", response);
 		return responseEntityMapper.getResponseEntity(payload, HttpStatus.OK);
