@@ -19,17 +19,12 @@ public class DataDumpingRunner implements CommandLineRunner {
 	@Autowired
 	private WeatherRepositoy weatherRepositoy;
 	@Autowired
-	private ClientRepository usersRepository;
-
-	@Autowired
 	private Random random;
 
 	@Override
 	public void run(String... args) throws Exception {
 
 		long count = weatherRepositoy.count();count=150-count;
-
-		Random random = new Random();
 
 		for(int i = 1;i<=count;i++)
 		{
@@ -44,8 +39,8 @@ public class DataDumpingRunner implements CommandLineRunner {
 
 			WeatherReport weather = new WeatherReport(city, temperature, weatherType);
 			weatherRepositoy.save(weather);
+			
 		}
-
 	}
 
 	List<String> cities = Arrays.asList("Mumbai", "Delhi", "Bengaluru", "Hyderabad", "Ahmedabad", "Chennai", "Kolkata",
