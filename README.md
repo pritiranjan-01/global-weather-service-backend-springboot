@@ -151,7 +151,6 @@ Designed with a clean, maintainable architecture — ready to scale or evolve in
 - Java 17 or higher
 - Maven  
 - MySQL  
-- SMTP server (Gmail App Password)
 - Postman (for API testing)
 
 ---
@@ -194,57 +193,38 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
-# ⚙️ Configuration
-
-### Database  
-Spring Boot auto-creates tables using `ddl-auto=update`.
-
-### SMTP Email  
-Supports:  
-- Gmail App Password  
-- Custom SMTP  
-
-### Scheduler
-```properties
-schedule.go=0 0 6 * * *
-schedule.pro=0 0 6 * * *
-schedule.max=0 0 6,18 * * *
-```
-
----
-
 # 📘 API Documentation
 
 ### Weather APIs
-``POST /weather`` - Create Weather Report
-``GET /weather`` -  All Weather Report
-``GET /weather/{id}`` - Id wise Weather Report
-``GET /weather/page?pageNumber=&pageSize=`` - Page wise Weather Report
-``GET /weather/count`` - Total Weather Report
-``PUT /weather/{id}`` - Update Weather Report
-``DELETE /weather/{id}`` - Delete Weather Report 
+``POST /weather`` - Create Weather Report  
+``GET /weather`` -  All Weather Report  
+``GET /weather/{id}`` - Id wise Weather Report  
+``GET /weather/page?pageNumber=&pageSize=`` - Page wise Weather Report  
+``GET /weather/count`` - Total Weather Report  
+``PUT /weather/{id}`` - Update Weather Report  
+``DELETE /weather/{id}`` - Delete Weather Report  
 
 ### Global Weather APIs
-``GET /global`` - All global weather
-``GET /global/{city}`` - City wise global weather
+``GET /global`` - All global weather  
+``GET /global/{city}`` - City wise global weather  
 
 ### Client APIs
-``GET    /client/{email}`` - Fetch a Client by Email
-``PUT    /client/{email}`` - Update a Client by Email
-``DELETE /client/{email}`` - Delete a Client (Soft Delete)
-``POST   /client/register `` - Register a new Client
-``POST   /client/verify-otp`` - Verify Client Email OTP (Query Params: email, otp)
-``PATCH  /client/{email}/subscription`` - Update Client Subscription Type
-``PATCH  /client/{email}/status`` - Update Client Active/Inactive Status
-``GET    /client`` - Fetch all Clients
-``GET    /client/subscription-types`` - Get all available Subscription Types
-``GET    /client/count/{isActive}`` - Count Clients by Active/Inactive state
+``GET    /client/{email}`` - Fetch a Client by Email  
+``PUT    /client/{email}`` - Update a Client by Email  
+``DELETE /client/{email}`` - Delete a Client (Soft Delete)  
+``POST   /client/register `` - Register a new Client  
+``POST   /client/verify-otp`` - Verify Client Email OTP (Query Params: email, otp)  
+``PATCH  /client/{email}/subscription`` - Update Client Subscription Type  
+``PATCH  /client/{email}/status`` - Update Client Active/Inactive Status  
+``GET    /client`` - Fetch all Clients  
+``GET    /client/subscription-types`` - Get all available Subscription Types  
+``GET    /client/count/{isActive}`` - Count Clients by Active/Inactive state  
 
 ### Audit Reports API 
-``GET /audit/report`` - Audit Report
+``GET /audit/report`` - Audit Report  
 
 ### PDF Generation API
-``GET /weather-report/download`` - Genrate PDF Weather Report 
+``GET /weather-report/download`` - Genrate PDF Weather Report  
 
 # ⏰ Scheduled Tasks
 
@@ -255,6 +235,12 @@ schedule.max=0 0 6,18 * * *
 | MAX | 8 AM & 8 PM | Email PDF |
 
 ---
+
+# 📊 Monitoring
+Access Spring Boot Actuator endpoints:
+- Health: `http://localhost:8080/actuator/health`  
+- Metrics: `http://localhost:8080/actuator/metrics`  
+- Info: `http://localhost:8080/actuator/info`  
 
 # 🤝 Contributing
 1. Fork the repo  
