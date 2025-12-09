@@ -3,19 +3,28 @@ A fully functional weather management and automated reporting system built using
 
 ---
 
+## 🚀 Live Demo
+🔗 **Backend Live API:** 
+[http://springbootrestapi-env.eba-bugmbvqw.ap-south-1.elasticbeanstalk.com/swagger-ui/index.html](http://springbootrestapi-env.eba-bugmbvqw.ap-south-1.elasticbeanstalk.com/swagger-ui/index.html)
+🔗 **Frontend App :** 
+[https://globalweatherservice.vercel.app/](https://globalweatherservice.vercel.app/)
+
+---
+
 # 📋 Table of Contents
-- Overview  
-- Architecture  
-- Features  
-- Technology Stack  
-- Functional Areas  
-- Getting Started  
-- Configuration  
-- API Documentation  
-- Scheduled Tasks
-- Monitoring
-- Contributing  
-- License & Author  
+- [Overview](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#-overview)  
+- [Architecture](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/edit/main/README.md#-api-documentation)  
+- [Features](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#%EF%B8%8F-architecture)  
+- [Technology Stack](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#%EF%B8%8F-technology-stack)  
+- [Functional Areas](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#-functional-areas)  
+- [Getting Started](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#-getting-started)
+- [Deployment](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#-deployment)
+- [Configuration](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#3-configure-environment-variables)  
+- [API Documentation](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#-api-documentation)  
+- [Scheduled Tasks](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#-scheduled-tasks)
+- [Monitoring](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#-monitoring)
+- [Contributing](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#-contributing)  
+- [License & Author](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/tree/main?tab=readme-ov-file#-license)  
 
 ---
 
@@ -191,6 +200,21 @@ app.base-url=http://localhost:8080
 ```
 http://localhost:8080/swagger-ui/index.html
 ```
+---
+
+# 🚀 Deployment
+
+### Backend Deployment (AWS Elastic Beanstalk)
+The backend is deployed on **AWS Elastic Beanstalk**, which provides auto-scaling, load balancing, environment management, and CI/CD deployment pipelines for Spring Boot applications.
+
+🔗 Live Backend API:  
+https://springbootrestapi-env.eba-bugmbvqw.ap-south-1.elasticbeanstalk.com/swagger-ui/index.html
+
+### Frontend Deployment (Vercel)
+The frontend is deployed on **Vercel**, offering instant deployment, CDN optimization, and continuous updates whenever new commits are pushed.
+
+🔗 Live Frontend App:  
+https://globalweatherservice.vercel.app/
 
 ---
 
