@@ -4,8 +4,9 @@ A fully functional weather management and automated reporting system built using
 ---
 
 ## 🚀 Live Demo
-🔗 [Backend Live API](http://springbootrestapi-env.eba-bugmbvqw.ap-south-1.elasticbeanstalk.com/swagger-ui/index.html)  
-🔗 [Frontend App](https://globalweatherservice.vercel.app/)
+🔗 [**Backend Live API**](http://springbootrestapi-env.eba-bugmbvqw.ap-south-1.elasticbeanstalk.com/swagger-ui/index.html)  
+🔗 [**Frontend App**](https://globalweatherservice.vercel.app/)
+🔗 [**Frontend Repository:**](https://github.com/pritiranjan-01/weather-service-frontend)
 
 
 ---
@@ -168,8 +169,8 @@ Designed with a clean, maintainable architecture — ready to scale or evolve in
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/pritiranjan-01/Weather-Service-Backend-Springboot-REST.git
-cd Weather-Service-Backend-Springboot-REST
+git clone https://github.com/pritiranjan-01/global-weather-service-backend-springboot.git
+cd global-weather-service-backend-springboot
 ```
 
 ### 2. Create database
