@@ -4,8 +4,9 @@ A fully functional weather management and automated reporting system built using
 ---
 
 ## 🚀 Live Demo
-🔗 **[Backend Live API]** (http://springbootrestapi-env.eba-bugmbvqw.ap-south-1.elasticbeanstalk.com/swagger-ui/index.html)  
-🔗 **[Frontend App]**(https://globalweatherservice.vercel.app/)  
+🔗 [Backend Live API](http://springbootrestapi-env.eba-bugmbvqw.ap-south-1.elasticbeanstalk.com/swagger-ui/index.html)  
+🔗 [Frontend App](https://globalweatherservice.vercel.app/)
+
 
 ---
 
