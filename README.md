@@ -12,7 +12,8 @@ A fully functional weather management and automated reporting system built using
 - Getting Started  
 - Configuration  
 - API Documentation  
-- Scheduled Tasks  
+- Scheduled Tasks
+- Monitoring
 - Contributing  
 - License & Author  
 
@@ -225,6 +226,35 @@ http://localhost:8080/swagger-ui/index.html
 
 ### PDF Generation API
 ``GET /weather-report/download`` - Genrate PDF Weather Report  
+
+# 📝 API Documentation
+
+## Sample API Request
+
+### Weather Report Creation
+```
+POST http://localhost:8080/weather  
+{  
+  "temp": 10,  
+  "city": "bbsr",  
+  "weathertype": "rainy"  
+}  
+```
+### Client Registration
+```
+ POST http://localhost:8080/client/register  
+{  
+  "name": "example",  
+  "email": "example@gmail.com",  
+  "subscriptionType": 0,  
+  "phoneNumber": "1234567890"  
+}
+```
+### OTP Verification
+```
+http://localhost:8080/client/verify-otp?email=example@@gmail.com&otp=311532
+```
+
 
 # ⏰ Scheduled Tasks
 
