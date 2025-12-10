@@ -306,7 +306,7 @@ Access Spring Boot Actuator endpoints:
 
 # 📄 License
 MIT License
-
+See the [LICENSE](https://github.com/pritiranjan-01/global-weather-service-backend-springboot/blob/main/LICENSE) file for details.
 ---
 
 # 👤 Author
