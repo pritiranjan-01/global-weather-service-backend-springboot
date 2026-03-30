@@ -25,83 +25,79 @@ import com.qsp.util.JsonConverter;
 @Service
 public class InternationalWeatherServiceImplementation implements InternationalWeatherService {
 
-    private final JsonConverter jsonConverter;
+	private final JsonConverter jsonConverter;
 
 	@Value("${global_weather_baseurl}")
 	private String base_url;
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
 
-
-    InternationalWeatherServiceImplementation(JsonConverter jsonConverter) {
-        this.jsonConverter = jsonConverter;
-    }
-	
+	InternationalWeatherServiceImplementation(JsonConverter jsonConverter) {
+		this.jsonConverter = jsonConverter;
+	}
 
 	@Override
 	public ResponseEntity<ResponseStructure<WeatherDTO>> getInternationalWeatherByCityName(String city) {
-		String url = base_url+"/InternationalWeather/"+city; 
+		String url = base_url + "/InternationalWeather/" + city;
 		ResponseEntity<ResponseStructure<WeatherDTO>> entity;
-		try { 
-			entity= restTemplate.exchange(
-		
-		                    url,
-		                    HttpMethod.GET,
-		                    null, // RequestBody
-		                    new ParameterizedTypeReference<ResponseStructure<WeatherDTO>>() {}
-		            );
-	    return entity;
-		}catch (ResourceAccessException e) {
-		   System.out.println("International Weather Service seems to be offline: " + e.getMessage());
-		   throw new ServiceUnavailableException("International Weather API is offline");
+		try {
+			entity = restTemplate.exchange(
+
+					url, HttpMethod.GET, null, // RequestBody
+					new ParameterizedTypeReference<ResponseStructure<WeatherDTO>>() {
+					});
+			return entity;
+		} catch (ResourceAccessException e) {
+			System.out.println("International Weather Service seems to be offline: " + e.getMessage());
+			throw new ServiceUnavailableException("International Weather API is offline");
 		}
 	}
 
 	@Override
 	public ResponseEntity<ResponseStructure<Map<String, WeatherDTO>>> getAllInternationalCityWeather() {
-		String url = base_url+"/InternationalWeather";
+		String url = base_url + "/InternationalWeather";
 		ResponseEntity<ResponseStructure<Map<String, WeatherDTO>>> entity;
-	    try {
-		    entity =	 restTemplate.exchange(
-		                    url,
-		                    HttpMethod.GET,
-		                    null, // RequestBody
-		                    new ParameterizedTypeReference<ResponseStructure<Map<String, WeatherDTO>>>() {}
-		            );
-		return entity;
-	   }catch (ResourceAccessException e) {
-		   System.out.println("International Weather Service seems to be offline: " + e.getMessage());
-		    throw new ServiceUnavailableException("International Weather API is offline");
-	   }
+		try {
+			entity = restTemplate.exchange(url, HttpMethod.GET, null, // RequestBody
+					new ParameterizedTypeReference<ResponseStructure<Map<String, WeatherDTO>>>() {
+					});
+			return entity;
+		} catch (ResourceAccessException e) {
+			System.out.println("International Weather Service seems to be offline: " + e.getMessage());
+			throw new ServiceUnavailableException("International Weather API is offline");
+		} catch (Exception e) {
+			e.printStackTrace(); // 🔥 MUST for debugging
+			throw new ServiceUnavailableException("External API failed: " + e.getMessage());
+		}
 
 	}
 
 	@Override
 	public List<WeatherReport> getInternationalWeather(Integer length) {
-		ResponseEntity<ResponseStructure<Map<String, WeatherDTO>>> 
-							allWeather 	= getAllInternationalCityWeather();
-		
+		ResponseEntity<ResponseStructure<Map<String, WeatherDTO>>> allWeather = getAllInternationalCityWeather();
+
 		ResponseStructure<Map<String, WeatherDTO>> structure = allWeather.getBody();
-		
+
 		Map<String, WeatherDTO> weatherMap = (structure != null) ? structure.getPayload() : new HashMap<>();
 		List<Map.Entry<String, WeatherDTO>> entryList = new ArrayList<>(weatherMap.entrySet());
 		Collections.shuffle(entryList);
-		
+
 		List<WeatherReport> weatherList = new ArrayList<>();
-		
+
 		for (Map.Entry<String, WeatherDTO> entry : weatherMap.entrySet()) {
-			if (weatherList.size() >= length) break; 
-	        
-		    String cityName = entry.getKey();          // Key is the City Name
-		    WeatherDTO dto = entry.getValue();         // Value is the WeatherDTO object
-		    if(dto!=null) {
-		    		WeatherReport report = new WeatherReport();
-		    		report.setCity(cityName);
-		    		report.setTemp(dto.getTemperature());
-		    		report.setWeatherType(dto.getType());
-		    		weatherList.add(report);
-		    }
+			if (weatherList.size() >= length)
+				break;
+
+			String cityName = entry.getKey(); // Key is the City Name
+			WeatherDTO dto = entry.getValue(); // Value is the WeatherDTO object
+			if (dto != null) {
+				WeatherReport report = new WeatherReport();
+				report.setCity(cityName);
+				report.setTemp(dto.getTemperature());
+				report.setWeatherType(dto.getType());
+				weatherList.add(report);
+			}
 		}
 		return weatherList;
 	}
