@@ -1,14 +1,15 @@
 package com.qsp.serviceimplement;
 
 import java.time.LocalDateTime;
+
 import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+//import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.qsp.event.ClientSaveEvent;
@@ -21,34 +22,40 @@ import com.qsp.exception.custom.TooManyOtpAttemptsException;
 import com.qsp.requestdto.ClientCreationDto;
 import com.qsp.service.ClientService;
 import com.qsp.service.MailOTPService;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.CreateEmailResponse;
 
-import jakarta.mail.internet.MimeMessage;
+//import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class MailOtpServiceImplementation implements MailOTPService {
 
-	@Autowired
-	private JavaMailSender mailSender;
+//	@Autowired
+//	private JavaMailSender mailSender;
 	
-	@Autowired
-	private ClientService clientService;
+	private final Resend resend;
 	
-	@Autowired
-	private ApplicationEventPublisher publisher;
+	private final ClientService clientService;
+	
+	
+	private final ApplicationEventPublisher publisher;
 	
 	@Autowired
 	@Qualifier("otpholder")
 	private Map<String, Object[]> otpHolder;
 
-	@Autowired
-	private Random random;
+	
+	private final Random random;
+
 
 	@Override
 	public String sendOtp(String emailId, ClientCreationDto dto) {
 		
 		if(clientService.checkClientEmailExistAndIsActiveStatusTrue(emailId))
 			throw new EmailAlreadyExistException("Email already exist");
-
 		
 		try {
 			Integer otp = random.nextInt(100000,1000000);
@@ -57,8 +64,8 @@ public class MailOtpServiceImplementation implements MailOTPService {
 			Object value[] = new Object[] { dto, otp + "", LocalDateTime.now().plusMinutes(3), 0 };
 			otpHolder.put(emailId, value);
 			
-			MimeMessage mimeMessage = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+//			MimeMessage mimeMessage = mailSender.createMimeMessage();
+//			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
 			String htmlContent = """
 			        <p>Dear User,</p>
@@ -66,18 +73,26 @@ public class MailOtpServiceImplementation implements MailOTPService {
 			            Your One-Time Password (OTP) for creating your 
 			            <b>Global Weather Service</b> account is:  <b>%s</b> 
 			        </p>
-			        <p>Please enter this OTP within <b>2 minutes</b> to complete your verification.</p>
+			        <p>Please enter this OTP within <b>3 minutes</b> to complete your verification.</p>
 			        <p>If you did not request this OTP, please ignore this email or contact our support team.</p>
 			        <p> Regards,<br> <b>Global Weather Service Team</b> </p>
 			        """.formatted(otp);
 
-			helper.setTo(emailId);
-			helper.setSubject("Your OTP for Global Weather Service");
-			helper.setFrom("pritiranjan.mohanty2003@gmail.com");
-			helper.setText(htmlContent, true);
+//			helper.setTo(emailId);
+//			helper.setSubject("Your OTP for Global Weather Service");
+//			helper.setFrom("pritiranjan.mohanty2003@gmail.com");
+//			helper.setText(htmlContent, true);
+//			mailSender.send(mimeMessage);
+			
+			CreateEmailOptions params = CreateEmailOptions.builder()
+			        .from("Weather App <weather@pritiranjan.dev>")
+			        .to(emailId)
+			        .subject("Your OTP for Global Weather Service")
+			        .html(htmlContent)
+			        .build();
 
-			mailSender.send(mimeMessage);
-			System.out.println(otpHolder);
+			CreateEmailResponse response = resend.emails().send(params);
+//			System.out.println(otpHolder);
 			
 			return  "Otp send successfully to recipient email id";
 			

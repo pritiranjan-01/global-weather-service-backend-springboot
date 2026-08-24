@@ -2,12 +2,13 @@ package com.qsp.listener;
 
 import java.util.Map;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+//import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -18,24 +19,27 @@ import com.qsp.requestdto.ClientCreationDto;
 import com.qsp.service.AuditService;
 import com.qsp.service.ClientService;
 import com.qsp.util.SubscriptionType;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.CreateEmailResponse;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+//import jakarta.mail.MessagingException;
+//import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class AddClientListener {
 
-	@Autowired
-	private ClientService clientService;
+	private final ClientService clientService;
 	
-	@Autowired
-	private AuditService auditService;
+	private final AuditService auditService;
 	
-	@Autowired
-	private JavaMailSender mailSender;
+//	private final JavaMailSender mailSender;
 	
-	@Autowired
-	private ClientMapper clientMapper;
+ 	private final Resend resend;
+	
+	private final ClientMapper clientMapper;
 	
 	@Autowired
 	@Qualifier("otpholder")
@@ -45,7 +49,7 @@ public class AddClientListener {
 	@Async
 	@Order(2)
 	@EventListener
-	public void notifyClient(ClientSaveEvent event) throws MessagingException {
+	public void notifyClient(ClientSaveEvent event) {
 
 	    Object[] object = otpHolder.get(event.getEmailid());
 	    ClientCreationDto dto = (ClientCreationDto) object[0];
@@ -55,12 +59,11 @@ public class AddClientListener {
 	    String subscriptionDescription = SubscriptionType.getSubscriptionDetails(subscriptionType);
 	
 	    // Prepare MIME message
-	    MimeMessage mimeMessage = mailSender.createMimeMessage();
-	    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-
-	    helper.setFrom("pritiranjan.mohanty2003@gmail.com");
-	    helper.setTo(event.getEmailid());
-	    helper.setSubject("Welcome to Global Weather Service India 🎉");
+//	    MimeMessage mimeMessage = mailSender.createMimeMessage();
+//	    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+//	    helper.setFrom("pritiranjan.mohanty2003@gmail.com");
+//	    helper.setTo(event.getEmailid());
+//	    helper.setSubject("Welcome to Global Weather Service India 🎉");
 
 	    // HTML Message (simple and clean)
 	    String htmlMessage = ""
@@ -85,9 +88,21 @@ public class AddClientListener {
 	        + "</body>"
 	        + "</html>";
 
-	    helper.setText(htmlMessage, true);
+//	    helper.setText(htmlMessage, true);
+//	    mailSender.send(mimeMessage);
+	    
+	    try {
+	        CreateEmailOptions params = CreateEmailOptions.builder()
+			        .from("Weather App <weather@pritiranjan.dev>")
+			        .to(event.getEmailid())
+			        .subject("Welcome to Global Weather Service India 🎉")
+			        .html(htmlMessage)
+			        .build();
 
-	    mailSender.send(mimeMessage);
+			CreateEmailResponse response = resend.emails().send(params);
+	        }catch (Exception e) {
+	        		e.printStackTrace();
+			}
 	}
 
 	

@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @EnableCaching		  //                      		                    = @Configuration															
 @EnableAspectJAutoProxy // for aop
 @EnableJpaAuditing // for time stamping
-@EnableAsync //for multhithreading
+@EnableAsync //for multithreading
 @EnableScheduling
 @OpenAPIDefinition
 //(

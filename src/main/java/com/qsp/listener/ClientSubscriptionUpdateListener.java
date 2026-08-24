@@ -1,42 +1,47 @@
 package com.qsp.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.event.EventListener;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+//import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.qsp.event.ClientSubscriptionUpdateEvent;
 import com.qsp.service.AuditService;
 import com.qsp.util.SubscriptionType;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.CreateEmailResponse;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+//import jakarta.mail.MessagingException;
+//import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class ClientSubscriptionUpdateListener {
 
-	@Autowired
-	private AuditService auditService;
+	private final AuditService auditService;
 	
-	@Autowired
-	private JavaMailSender mailSender;
+//	private final JavaMailSender mailSender;
+	
+	private final Resend resend;
 	
 	@Async
 	@EventListener
-	public void notifySubscriptionChanges(ClientSubscriptionUpdateEvent event) throws MessagingException {
+	public void notifySubscriptionChanges(ClientSubscriptionUpdateEvent event) {
 
 	    SubscriptionType subscriptionType = SubscriptionType.getUserSubscriptionType(event.getSubscriptionCode());
 	    String subscriptionDescription = SubscriptionType.getSubscriptionDetails(subscriptionType);
 
 	    // Create Mime Message
-	    MimeMessage mimeMessage = mailSender.createMimeMessage();
-	    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-
-	    helper.setFrom("pritiranjan.mohanty2003@gmail.com");
-	    helper.setTo(event.getEmail());
-	    helper.setSubject("Your Subscription Has Been Updated 🎉");
+//	    MimeMessage mimeMessage = mailSender.createMimeMessage();
+//	    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+//	    helper.setFrom("pritiranjan.mohanty2003@gmail.com");
+//	    helper.setTo(event.getEmail());
+//	    helper.setSubject("Your Subscription Has Been Updated 🎉");
 
 	    String htmlMessage = ""
 	        + "<html>"
@@ -59,9 +64,22 @@ public class ClientSubscriptionUpdateListener {
 	        + "</body>"
 	        + "</html>";
 
-	    helper.setText(htmlMessage, true);  // true => HTML email
+//	    helper.setText(htmlMessage, true);  // true => HTML email
+//	    mailSender.send(mimeMessage);
+	    
+	    try {
+	        CreateEmailOptions params = CreateEmailOptions.builder()
+			        .from("Weather App <weather@pritiranjan.dev>")
+			        .to(event.getEmail())
+			        .subject("Your Subscription Has Been Updated 🎉")
+			        .html(htmlMessage)
+			        .build();
 
-	    mailSender.send(mimeMessage);
+			CreateEmailResponse response = resend.emails().send(params);
+	        }catch (Exception e) {
+	        		e.printStackTrace();
+			}
+	    
 	}
 	
 	@Async

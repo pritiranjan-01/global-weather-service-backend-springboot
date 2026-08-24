@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+//import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,9 +39,12 @@ import com.qsp.service.EmailLogService;
 import com.qsp.service.InternationalWeatherService;
 import com.qsp.service.WeatherService;
 import com.qsp.util.JsonConverter;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.CreateEmailResponse;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+//import jakarta.mail.MessagingException;
+//import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -51,7 +54,8 @@ public class EmailAndPdfServiceImpl implements EmailAndPdfService {
 	private final WeatherService weatherService;
 	private final InternationalWeatherService intlWeatherService;
 	private final EmailLogService emaillLogService;
-    private final JavaMailSender mailSender;
+//    private final JavaMailSender mailSender;
+    private final Resend resend;
     private final TemplateEngine templateEngine;
     private final EmailWeatherMapper emailWeatherMapper; // map from entity to EmailWeatherDTO and adding advice 
     private final JsonConverter jsonConverter;
@@ -97,18 +101,30 @@ public class EmailAndPdfServiceImpl implements EmailAndPdfService {
         String htmlContent = templateEngine.process("weather-report", context);
 
         // 3. SEND EMAIL
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper;
-		try {
-			helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(clientEmail);
-        helper.setSubject("Daily Weather Update: " + listWeather.get(0).getCityName() + " and more");
-        helper.setFrom("pritiranjan.mohanty2003@gmail.com", "Weather Daily Updates"); // "Envelope" Name
-        helper.setText(htmlContent, true); // Set to TRUE for HTML
-        mailSender.send(message);
-        System.out.println("Email sent successfully to " + clientEmail);
-		}catch (MessagingException | UnsupportedEncodingException e) {
-			e.printStackTrace();
+//        MimeMessage message = mailSender.createMimeMessage();
+//        MimeMessageHelper helper;
+//		try {
+//			helper = new MimeMessageHelper(message, true, "UTF-8");
+//        helper.setTo(clientEmail);
+//        helper.setSubject("Daily Weather Update: " + listWeather.get(0).getCityName() + " and more");
+//        helper.setFrom("pritiranjan.mohanty2003@gmail.com", "Weather Daily Updates"); // "Envelope" Name
+//        helper.setText(htmlContent, true); // Set to TRUE for HTML
+//        mailSender.send(message);
+//        System.out.println("Email sent successfully to " + clientEmail);
+//		}catch (MessagingException | UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
+        try {
+        CreateEmailOptions params = CreateEmailOptions.builder()
+		        .from("Weather App <weather@pritiranjan.dev>")
+		        .to(clientEmail)
+		        .subject("Daily Weather Update: " + listWeather.get(0).getCityName() + " and more")
+		        .html(htmlContent)
+		        .build();
+
+		CreateEmailResponse response = resend.emails().send(params);
+        }catch (Exception e) {
+        		e.printStackTrace();
 		}
       
 	}
