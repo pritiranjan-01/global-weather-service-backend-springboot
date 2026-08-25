@@ -3,7 +3,6 @@ A fully functional weather management and automated reporting system built using
 
 ---
 
-## 🚀 Live Demo
 🔗 [**Frontend Repository**](https://github.com/pritiranjan-01/weather-service-frontend)
 
 ---
